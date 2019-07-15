@@ -12,31 +12,21 @@ class List extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         fetch("https://openagenda.com/agendas/95716291/events.json?key=2957e06e5b2e49a0bd17f18a6308156e&limit=1", {
             method: 'GET'
         }).then(res => {
             return res.json()
         }).then(data => {
-            this.setState({isLoading: false, events: data.events})
-            console.log(this.state.events)
+            this.setState({events: data.events, isLoading: false})
         }).catch(err => {
             console.log(err)
         })
     }
 
-    renderItem(data) {
-        return( 
-            <View>
-                <Text>{data}</Text>
-            </View>
-        )
-    }
-
     render() {
         const { events, isLoading } = this.state;
-        console.log("evts: " + JSON.stringify (events))
-        if (isLoading) {
+        if (isLoading === true) {
             return(
                 <View>
                     <ActivityIndicator />
@@ -44,10 +34,12 @@ class List extends Component {
             )
         }
         else {
+            console.log("Events: " + this.state.events.length)
             return (
+                
                 this.state.events.map((item, index) => {
                     <View>
-                        <Text>{item}</Text>
+                        <Text>{item.title}</Text>
                     </View>
                 })
             )
